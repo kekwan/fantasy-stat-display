@@ -4,10 +4,7 @@ chrome.storage.sync.get("trackingURL", function(result) {
 
   $.get({ url: currentURL, 
     success: function(data) {
-    var DOMNodes = $.parseHTML(data);
-    var dataHTML = $(DOMNodes).filter(".outer-wrapper")[0].innerHTML;
-    console.log(DOMNodes);
-    console.log(dataHTML);
+    parseStats(data);
     document.write(data);
     },
     error: function(xhr, textStatus, error){
@@ -18,3 +15,13 @@ chrome.storage.sync.get("trackingURL", function(result) {
     } 
   }); 
 });
+
+function parseStats (data) {
+      var pageDOMs = $.parseHTML(data);
+    var dataHTML = $(pageDOMs).filter(".outer-wrapper")[0].innerHTML;
+
+    var dataDOMs = $.parseHTML(dataHTML);
+    var innerDataHTML = $(dataDOMs).filter(".ct-box.yui-sv")[0].innerHTML;
+
+    console.log(innerDataHTML);
+}
