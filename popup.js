@@ -6,13 +6,12 @@ chrome.storage.sync.get("trackingURL", function(result) {
     success: function(data) {
     parseStats(data);
     parseMatchup(data);
-
     },
     error: function(xhr, textStatus, error){
       console.log(xhr.statusText);
       console.log(textStatus);
       console.log(error);
-      alert(xhr);
+      alert("You have not selected a team to display stats for. Please do so by right-clicking the team page on Yahoo Fantasy's webpage.");
     } 
   }); 
 });
@@ -51,18 +50,15 @@ function parseStats (data) {
 }
 
 function parseMatchup (data) {
-  let myRank = $(data).find(".Inlineblock.Mend-lg.Pstart-lg.Phone-ptop-lg")[0].innerText.trim();
-  tempArr = myRank.split(" ");
-  let myStanding = tempArr[tempArr.length - 1];
 
   let myScore = $(data).find(".Fz-lg.Ptop-lg.Phone-ptop-med:not(.Fw-b)")[0].innerText;
   let oppScore = $(data).find(".Fz-lg.Fw-b.Ptop-lg.Phone-ptop-med")[0].innerText;
+  // Takes standing away from opponents name
   let oppName = $(data).find(".Inlineblock.Fz-xxs.Pend-sm")[0].innerText;
   let ret = oppName.replace('vs ','');
   let tmp = ret.replace(/\d+-\d+-\d/, '');
-  let matchupTxt = "Your score " + " " + myScore + " vs. " + oppScore + " " + ret;
-  console.log(ret);
-  console.log(tmp);
+
+  let matchupTxt = "Your score " + " " + myScore + " vs. " + oppScore + " " + tmp;
   $("#matchup").text(matchupTxt);
 
 

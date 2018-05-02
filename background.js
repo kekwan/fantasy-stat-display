@@ -6,7 +6,7 @@ sendURL = function (page) {
 };
 
 chrome.contextMenus.create({
-  title: "Track this team!",
+  title: "Track This Team's Stats!",
   contexts:["page"],
   onclick: sendURL
 });
