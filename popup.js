@@ -5,7 +5,8 @@ chrome.storage.sync.get("trackingURL", function(result) {
   $.get({ url: currentURL, 
     success: function(data) {
     parseStats(data);
-    //document.write(data);
+    parseMatchup(data);
+
     },
     error: function(xhr, textStatus, error){
       console.log(xhr.statusText);
@@ -17,21 +18,12 @@ chrome.storage.sync.get("trackingURL", function(result) {
 });
 
 function parseStats (data) {
-
+    // Grabs html of table that contains stats
     var playerNodes = $.parseHTML($(data).find("#statTable0").children('tbody')[0].innerHTML);
 
-    // TODO: For each player node (15 of them), iterate through and populate table with 
-    // info contained in each player node 
-
-    // console.log(playerNodes);
-    // console.log(playerNodes[0].innerHTML);
-    // console.log($.parseHTML(playerNodes[0].innerHTML));
-
-    //$('#rostertable tbody').append('<tr>' + b + c + d + '</tr>');
-
+    // Iterate through each player to pull and display data in own table
     for (i = 0; i < playerNodes.length; i++) {
       var playerInfo = $.parseHTML(playerNodes[i].innerHTML);
-      console.log(playerInfo);
       let pos = '<td>' + playerInfo[0].innerText + '</td>';
       // Extracting name and position 
       let temp = playerInfo[1].innerText;
@@ -55,8 +47,23 @@ function parseStats (data) {
       let TO = '<td>' + playerInfo[17].innerText + '</td>';
       $('#rostertable tbody').append('<tr>' + pos+ player + opp + status  + fgm + fgper + ftm + ftper 
         + threePt + pts + reb + ast + st + blk + TO+ '</tr>');
-
     }
+}
+
+function parseMatchup (data) {
+  let myRank = $(data).find(".Inlineblock.Mend-lg.Pstart-lg.Phone-ptop-lg")[0].innerText.trim();
+  tempArr = myRank.split(" ");
+  let myStanding = tempArr[tempArr.length - 1];
+
+  let myScore = $(data).find(".Fz-lg.Ptop-lg.Phone-ptop-med:not(.Fw-b)")[0].innerText;
+  let oppScore = $(data).find(".Fz-lg.Fw-b.Ptop-lg.Phone-ptop-med")[0].innerText;
+  let oppName = $(data).find(".Inlineblock.Fz-xxs.Pend-sm")[0].innerText;
+  let ret = oppName.replace('vs ','');
+  let tmp = ret.replace(/\d+-\d+-\d/, '');
+  let matchupTxt = "Your score " + " " + myScore + " vs. " + oppScore + " " + ret;
+  console.log(ret);
+  console.log(tmp);
+  $("#matchup").text(matchupTxt);
 
 
 
