@@ -1,0 +1,9 @@
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+th {
+    background-color: rgb(34, 73, 67);
+    color: white;
+}
