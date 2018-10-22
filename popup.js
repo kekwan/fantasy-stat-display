@@ -1,26 +1,10 @@
 (function () {
-  var currentURL;
+  var baseURL;
   var displayDate = new Date();
 
   chrome.storage.sync.get("trackingURL", function (result) {
-    currentURL = result.trackingURL;
-    console.log("Value currently is " + currentURL);
-
-    $.get({
-      url: currentURL,
-      success: function (data) {
-        console.log(currentURL);
-        parseStats(data);
-        parseMatchup(data);
-        getDateText(displayDate);
-      },
-      error: function (xhr, textStatus, error) {
-        console.log(xhr.statusText);
-        console.log(textStatus);
-        console.log(error);
-        alert("You have not selected a team to display stats for. Please do so by right-clicking the team page on Yahoo Fantasy's webpage.");
-      }
-    });
+    baseURL = result.trackingURL;
+    getURLDetails(baseURL);
   });
 
   $(document).ready(function() {
@@ -35,37 +19,43 @@
       displayDate.setDate(displayDate.getDate() + 1);
       getDateText(displayDate);
       reloadTable(displayDate);
-
     });
-    
-    
   });
 
   function parseStats(data) {
+    $("#rostertable tbody tr").remove();
+    
+    // Index off by 1 if checking stats from previous dates
+    var todayDate = new Date();
+    var idx = 0;
+    if (new Date(displayDate.toDateString()) < new Date(todayDate.toDateString())) {
+      idx = 1;
+    }
+
     // Grabs html of table that contains stats
     var playerNodes = $.parseHTML($(data).find("#statTable0").children('tbody')[0].innerHTML);
     // Iterate through each player to pull and display data in own table
     for (i = 0; i < playerNodes.length; i++) {
       let playerInfo = $.parseHTML(playerNodes[i].innerHTML);
+      if(i==1) console.log(playerInfo);
+
       let pos = '<td>' + playerInfo[0].innerText + '</td>';
-      // Extracting name and position 
-      let temp = playerInfo[2].innerHTML;
-      let name = $(temp).find(".Nowrap.name.F-link")[0].innerText;
+      let name = $(data).find(".Nowrap.name.F-link")[i].innerText;
       let player = '<td>' + name + '</td>';
 
-      let opp = '<td>' + playerInfo[4].innerText + '</td>';
-      let status = '<td>' + playerInfo[5].innerText + '</td>';
-      let fgm = '<td>' + playerInfo[9].innerText + '</td>';
-      let fgper = '<td>' + playerInfo[10].innerText + '</td>';
-      let ftm = '<td>' + playerInfo[11].innerText + '</td>';
-      let ftper = '<td>' + playerInfo[12].innerText + '</td>';
-      let threePt = '<td>' + playerInfo[13].innerText + '</td>';
-      let pts = '<td>' + playerInfo[14].innerText + '</td>';
-      let reb = '<td>' + playerInfo[15].innerText + '</td>';
-      let ast = '<td>' + playerInfo[16].innerText + '</td>';
-      let st = '<td>' + playerInfo[17].innerText + '</td>';
-      let blk = '<td>' + playerInfo[18].innerText + '</td>';
-      let TO = '<td>' + playerInfo[19].innerText + '</td>';
+      let opp = '<td>' + playerInfo[4-idx].innerText + '</td>';
+      let status = '<td>' + playerInfo[5-idx].innerText + '</td>';
+      let fgm = '<td>' + playerInfo[9-idx].innerText + '</td>';
+      let fgper = '<td>' + playerInfo[10-idx].innerText + '</td>';
+      let ftm = '<td>' + playerInfo[11-idx].innerText + '</td>';
+      let ftper = '<td>' + playerInfo[12-idx].innerText + '</td>';
+      let threePt = '<td>' + playerInfo[13-idx].innerText + '</td>';
+      let pts = '<td>' + playerInfo[14-idx].innerText + '</td>';
+      let reb = '<td>' + playerInfo[15-idx].innerText + '</td>';
+      let ast = '<td>' + playerInfo[16-idx].innerText + '</td>';
+      let st = '<td>' + playerInfo[17-idx].innerText + '</td>';
+      let blk = '<td>' + playerInfo[18-idx].innerText + '</td>';
+      let TO = '<td>' + playerInfo[19-idx].innerText + '</td>';
       $('#rostertable tbody').append('<tr>' + pos + player + opp + status + fgm + fgper + ftm + ftper
         + threePt + pts + reb + ast + st + blk + TO + '</tr>');
     }
@@ -107,7 +97,25 @@
     var mon = dateObj.getMonth() + 1 >= 10 ? dateObj.getMonth() + 1: "0" + (dateObj.getMonth() + 1);
     var day = dateObj.getDate() >= 10 ? dateObj.getDate() : "0" + dateObj.getDate();
     var date = dateObj.getFullYear() + "-" + mon  + "-" + day;
-    var fullURL = currentURL + specificURL + date;    
+    var fullURL = baseURL + specificURL + date; 
+    getURLDetails(fullURL);   
+  }
+
+  function getURLDetails(link) {
+    $.get({
+      url: link,
+      success: function (data) {
+        parseStats(data);
+        parseMatchup(data);
+        getDateText(displayDate);
+      },
+      error: function (xhr, textStatus, error) {
+        console.log(xhr.statusText);
+        console.log(textStatus);
+        console.log(error);
+        alert("You have not selected a team to display stats for. Please do so by right-clicking the team page on Yahoo Fantasy's webpage.");
+      }
+    });
   }
 
   
