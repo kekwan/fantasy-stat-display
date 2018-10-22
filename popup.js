@@ -1,14 +1,18 @@
 (function () {
+  var currentURL;
+  var displayDate = new Date();
+
   chrome.storage.sync.get("trackingURL", function (result) {
-    var currentURL = result.trackingURL;
+    currentURL = result.trackingURL;
     console.log("Value currently is " + currentURL);
 
     $.get({
       url: currentURL,
       success: function (data) {
+        console.log(currentURL);
         parseStats(data);
         parseMatchup(data);
-        findDate(data);
+        getDateText(displayDate);
       },
       error: function (xhr, textStatus, error) {
         console.log(xhr.statusText);
@@ -21,11 +25,18 @@
 
   $(document).ready(function() {
     $("#backButton").click(function(){
-      alert("button");
+      var d = new Date();
+      d.setDate(displayDate.getDate() - 1 );
+      displayDate = d;
+      getDateText(d);
+      
     });
 
     $("#forwardButton").click(function(){
-      alert("button");
+      var d = new Date();
+      d.setDate(displayDate.getDate() + 1 );
+      displayDate = d;
+      getDateText(d);
     });
     
     
@@ -74,9 +85,23 @@
     $("#matchup").text(matchupTxt);
   }
 
-  function findDate(data) {
-    let currentDate = $(data).find(".flyout-title");
-    $("#date").text(currentDate[0].innerText);
+  function getDateText(dateObj) {
+    var dayText = getDayOfWeek(dateObj);
+    var monthText = getMonthName(dateObj.getMonth());
+    var fullDate = dayText + ", " + monthText + " " +dateObj.getDate();
+    $("#date").text(fullDate);
   }
+
+  function getMonthName(month) {
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return monthNames[month];
+  }
+
+  function getDayOfWeek(date) {
+    var dayOfWeek = new Date(date).getDay();    
+    return isNaN(dayOfWeek) ? null : ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'][dayOfWeek];
+  }
+
 
 })();
