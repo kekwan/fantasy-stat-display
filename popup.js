@@ -8,6 +8,7 @@
       success: function (data) {
         parseStats(data);
         parseMatchup(data);
+        findDate(data);
       },
       error: function (xhr, textStatus, error) {
         console.log(xhr.statusText);
@@ -18,12 +19,24 @@
     });
   });
 
+  $(document).ready(function() {
+    $("#backButton").click(function(){
+      alert("button");
+    });
+
+    $("#forwardButton").click(function(){
+      alert("button");
+    });
+    
+    
+  });
+
   function parseStats(data) {
     // Grabs html of table that contains stats
     var playerNodes = $.parseHTML($(data).find("#statTable0").children('tbody')[0].innerHTML);
     // Iterate through each player to pull and display data in own table
     for (i = 0; i < playerNodes.length; i++) {
-      var playerInfo = $.parseHTML(playerNodes[i].innerHTML);
+      let playerInfo = $.parseHTML(playerNodes[i].innerHTML);
       let pos = '<td>' + playerInfo[0].innerText + '</td>';
       // Extracting name and position 
       let temp = playerInfo[2].innerHTML;
@@ -60,4 +73,10 @@
     let matchupTxt = "Your score " + " " + myScore + " vs. " + oppScore + " " + tmp;
     $("#matchup").text(matchupTxt);
   }
+
+  function findDate(data) {
+    let currentDate = $(data).find(".flyout-title");
+    $("#date").text(currentDate[0].innerText);
+  }
+
 })();
