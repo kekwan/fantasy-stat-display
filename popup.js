@@ -25,18 +25,17 @@
 
   $(document).ready(function() {
     $("#backButton").click(function(){
-      var d = new Date();
-      d.setDate(displayDate.getDate() - 1 );
-      displayDate = d;
-      getDateText(d);
+      displayDate.setDate(displayDate.getDate() -1);
+      getDateText(displayDate);
+      reloadTable(displayDate);
       
     });
 
     $("#forwardButton").click(function(){
-      var d = new Date();
-      d.setDate(displayDate.getDate() + 1 );
-      displayDate = d;
-      getDateText(d);
+      displayDate.setDate(displayDate.getDate() + 1);
+      getDateText(displayDate);
+      reloadTable(displayDate);
+
     });
     
     
@@ -88,7 +87,7 @@
   function getDateText(dateObj) {
     var dayText = getDayOfWeek(dateObj);
     var monthText = getMonthName(dateObj.getMonth());
-    var fullDate = dayText + ", " + monthText + " " +dateObj.getDate();
+    var fullDate = dayText + ", " + monthText + " " + dateObj.getDate();
     $("#date").text(fullDate);
   }
 
@@ -102,6 +101,16 @@
     var dayOfWeek = new Date(date).getDay();    
     return isNaN(dayOfWeek) ? null : ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'][dayOfWeek];
   }
+
+  function reloadTable(dateObj) {
+    var specificURL = "/team?&date=";
+    var mon = dateObj.getMonth() + 1 >= 10 ? dateObj.getMonth() + 1: "0" + (dateObj.getMonth() + 1);
+    var day = dateObj.getDate() >= 10 ? dateObj.getDate() : "0" + dateObj.getDate();
+    var date = dateObj.getFullYear() + "-" + mon  + "-" + day;
+    var fullURL = currentURL + specificURL + date;    
+  }
+
+  
 
 
 })();
