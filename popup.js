@@ -37,8 +37,6 @@
     // Iterate through each player to pull and display data in own table
     for (i = 0; i < playerNodes.length; i++) {
       let playerInfo = $.parseHTML(playerNodes[i].innerHTML);
-      if(i==1) console.log(playerInfo);
-
       let pos = '<td>' + playerInfo[0].innerText + '</td>';
       let name = $(data).find(".Nowrap.name.F-link")[i].innerText;
       let player = '<td>' + name + '</td>';
