@@ -17,9 +17,14 @@ th {
 
 h5 {
     text-align: left;
+    font-size: 25px;
   }
 
 #calendar {
     position: absolute;
     right: 0;
+  }
+
+  #date {
+      font-size:18px;
   }

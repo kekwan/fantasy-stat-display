@@ -60,6 +60,9 @@
   }
 
   function parseMatchup(data) {
+
+    let tempName = $(data).find(".Navtarget.Py-sm.Pstart-lg.F-reset.Wordwrap-bw.No-case")[0].innerText;
+    let myTeam = tempName.substr(0, tempName.indexOf("  "));
     let matchupHTML = $(data).find(".Fz-lg.Ptop-lg.Phone-ptop-med");
     let myScore = matchupHTML[0].innerText;
     let oppScore = matchupHTML[1].innerText;
@@ -68,7 +71,7 @@
     let ret = oppName.replace('vs ', '');
     let tmp = ret.replace(/\d+-\d+-\d/, '');
 
-    let matchupTxt = "Your score " + " " + myScore + " vs. " + oppScore + " " + tmp;
+    let matchupTxt = myTeam + " " + myScore + " vs. " + oppScore + " " + tmp;
     $("#matchup").text(matchupTxt);
   }
 

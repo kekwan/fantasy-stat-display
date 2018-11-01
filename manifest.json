@@ -4,8 +4,8 @@
     "description": "Displays your team's player stats and current week's match up score for Yahoo Fantasy Basketball in a pop-up for quick viewing!",
     "permissions": ["<all_urls>", "storage", "contextMenus"],
     "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+        "scripts": ["background.js"],
+        "persistent": true
     },
     "browser_action": {
       "default_popup": "popup.html",
