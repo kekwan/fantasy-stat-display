@@ -2,7 +2,7 @@
     "name": "Fantasy Basketball Tracker",
     "version": "1.0",
     "description": "Displays your team's player stats and current week's match up score for Yahoo Fantasy Basketball in a pop-up for quick viewing!",
-    "permissions": ["https://basketball.fantasysports.yahoo.com/nba/*", "storage", "contextMenus", "webNavigation"],
+    "permissions": ["https://basketball.fantasysports.yahoo.com/nba/*", "storage", "contextMenus"],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
