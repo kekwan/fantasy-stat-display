@@ -1,23 +1,24 @@
 (function () {
   var baseURL;
   var displayDate = new Date();
-
-  chrome.storage.sync.get("trackingURL", function (result) {
-    baseURL = result.trackingURL;
+  var allUrls = [];
+  
+  chrome.storage.sync.get("trackingURLs", function (result) {
+    baseURL = result.trackingURLs;
     getURLDetails(baseURL);
   });
 
   $(document).ready(function() {
     $("#backButton").click(function(){
       displayDate.setDate(displayDate.getDate() -1);
-      getDateText(displayDate);
+      setDateText(displayDate);
       reloadTable(displayDate);
       
     });
 
     $("#forwardButton").click(function(){
       displayDate.setDate(displayDate.getDate() + 1);
-      getDateText(displayDate);
+      setDateText(displayDate);
       reloadTable(displayDate);
     });
   });
@@ -75,7 +76,7 @@
     $("#matchup").text(matchupTxt);
   }
 
-  function getDateText(dateObj) {
+  function setDateText(dateObj) {
     var dayText = getDayOfWeek(dateObj);
     var monthText = getMonthName(dateObj.getMonth());
     var fullDate = dayText + ", " + monthText + " " + dateObj.getDate();
@@ -108,13 +109,11 @@
       success: function (data) {
         parseStats(data);
         parseMatchup(data);
-        getDateText(displayDate);
+        setDateText(displayDate);
       },
       error: function (xhr, textStatus, error) {
         console.log(xhr.statusText);
-        console.log(textStatus);
-        console.log(error);
-        alert("You have not selected a team to display stats for. Please do so by right-clicking the team page on Yahoo Fantasy's webpage.");
+        alert("You have not selected a team to display stats for. Please do so by right-clicking the 'My Team' page on Yahoo Fantasy's webpage.");
       }
     });
   }
