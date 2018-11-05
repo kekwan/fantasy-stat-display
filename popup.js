@@ -26,10 +26,10 @@
 
     $("#changeTeamButton").click(function () {
       teamIdx += 1;
-      teamIdx = teamIdx == allUrls.length  ? 0 : teamIdx;
+      teamIdx = teamIdx == allUrls.length ? 0 : teamIdx;
       baseURL = allUrls[teamIdx];
       displayDate = new Date();
-      getURLDetails(baseURL); 
+      getURLDetails(baseURL);
     });
   });
 
@@ -127,8 +127,5 @@
       }
     });
   }
-
-
-
-
+  
 })();
