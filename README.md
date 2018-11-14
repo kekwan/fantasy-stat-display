@@ -1,3 +1,6 @@
 # fantasy-stat-display
-Google Chrome Extension that tracks the current day stats of your fantasy basketball team and current match-up score for Yahoo.
-Team stats and match-up are populated in a table with the click of a pop-up icon. 
+Fantasy Stat Display is an extantion that can be added to your web browser. It tracks the following information:
+- current day stats of your fantasy basketball team ( 3 points, points, rebounds etc..)
+- current match-up score for Yahoo ( The current weekly score agains your opponent)
+
+With a click of a pop-up icon the team stats and match ups are populated into a table for a better and clearer view.
